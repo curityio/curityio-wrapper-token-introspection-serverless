@@ -5,8 +5,8 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs16.x
-  profile: dev # aws profile to be used for aws connection
-  region: eu-west-1
+  profile: dev # aws profile to be used for aws credentials
+  region: eu-west-1 # aws region to deploy the lambda function
   versionFunctions: false
 
 functions:
@@ -25,8 +25,8 @@ functions:
     description: Introspects the wrapper tokens and returns an access token in the JWT format
     handler: handler.introspectWrapperTokens
     environment:
-      OAUTH2_INTROSPECTION_CLIENT_ID: "introspection-client" 
-      OAUTH2_INTROSPECTION_CLIENT_SECRET: "password"
+      CLIENT_ID: "introspection-client" 
+      CLIENT_SECRET: "password"
     events:
       - http:
           path: introspect
