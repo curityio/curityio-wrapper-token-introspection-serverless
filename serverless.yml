@@ -1,0 +1,34 @@
+service: wrapper-token-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  profile: dev # aws profile to be used for aws credentials
+  region: eu-west-1 # aws region to deploy the lambda function
+  versionFunctions: false
+
+functions:
+  authorizer: 
+    name: wrapper-token-authorizer
+    description: Authorizes the call to the wrapperTokenIntrospector lambda function
+    handler: authorizer.handler
+    environment:
+    #  TRUSTED_ISSUERS: "https://auth.example.com/brand1/oauth-anonymous,https://auth.example.com/brand2/oauth-anonymous"
+      TRUSTED_ISSUERS: "<comma separated list of issuers>"
+    #  TRUSTED_AUDIENCES: "client-brand1,client-brand2"
+      TRUSTED_AUDIENCES: "comma separated list of clientIds"
+
+  wrapperTokenIntrospector:
+    name: wrapper-token-introspector
+    description: Introspects the wrapper tokens and returns an access token in the JWT format
+    handler: handler.introspectWrapperTokens
+    environment:
+      CLIENT_ID: "introspection-client" 
+      CLIENT_SECRET: "password"
+    events:
+      - http:
+          path: introspect
+          method: post
+          authorizer: authorizer
