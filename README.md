@@ -11,6 +11,8 @@ The Curity Identity Server has great support for multi-tenancy. See [Running the
 
 This code example shows how to introspect tokens issued by various different tenants using a custom single token introspection endpoint.
 
+<img src="./docs/serverless-lambda-architecture.png" alt="wrapper-token-lambda" width="800"/>
+
 ## Configuration
 
 `serverless.yml` provides few configuration options, namely : 
